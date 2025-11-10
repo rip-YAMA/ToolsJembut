@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hoshino Web App - Blue Archive</title>
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#a78bfa">
+    
+    <!-- Icons -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💤</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --hoshino-purple: #a78bfa;
+            --hoshino-pink: #f472b6;
+            --hoshino-blue: #60a5fa;
+            --hoshino-dark: #1e1b4b;
+            --hoshino-light: #f0f9ff;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--hoshino-dark) 0%, #312e81 50%, #1e1b4b 100%);
+            color: white;
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background dengan tema Blue Archive */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.3;
+        }
+
+        .bg-particle {
+            position: absolute;
+            background: var(--hoshino-purple);
+            border-radius: 50%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-25px) rotate(180deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        /* Header dengan Hoshino Blue Archive */
+        .header {
+            background: linear-gradient(135deg, 
+                rgba(167, 139, 250, 0.9) 0%, 
+                rgba(244, 114, 182, 0.8) 50%, 
+                rgba(96, 165, 250, 0.7) 100%);
+            padding: 40px 30px;
+            border-radius: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(167, 139, 250, 0.4);
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://i.pinimg.com/736x/2a/hol/KhJR.jpg') center/cover;
+            opacity: 0.15;
+            z-index: -1;
+        }
+
+        .dev-credit {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .partner-badge {
+            position: absolute;
+            top: 20px;
+            left: 25px;
+            background: rgba(255, 255, 255, 0.25);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95em;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .hoshino-avatar {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 30px var(--hoshino-purple),
+                        0 0 60px var(--hoshino-pink),
+                        0 0 90px var(--hoshino-blue);
+            background: linear-gradient(45deg, 
+                url('https://i.pinimg.com/736x/2a/hol/KhJR.jpg') center/cover,
+                rgba(167, 139, 250, 0.8));
+            animation: hoshinoGlow 3s ease-in-out infinite alternate;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hoshino-avatar::after {
+            content: '💤';
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            font-size: 1.5em;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes hoshinoGlow {
+            from { 
+                box-shadow: 0 0 20px var(--hoshino-purple),
+                           0 0 40px var(--hoshino-pink);
+            }
+            to { 
+                box-shadow: 0 0 30px var(--hoshino-blue),
+                           0 0 60px var(--hoshino-purple),
+                           0 0 90px var(--hoshino-pink);
+            }
+        }
+
+        .title-section h1 {
+            font-size: 3.2em;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, #f0f9ff, #d8b4fe, #93c5fd);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+        }
+
+        .subtitle {
+            font-size: 1.3em;
+            opacity: 0.9;
+            margin-bottom: 10px;
+            color: #e0e7ff;
+        }
+
+        .hoshino-quote {
+            font-style: italic;
+            opacity: 0.8;
+            margin-top: 10px;
+            color: #c7d2fe;
+        }
+
+        /* Collaboration Section */
+        .collab-section {
+            background: rgba(255, 255, 255, 0.08);
+            padding: 25px;
+            border-radius: 20px;
+            margin: 25px 0;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .collab-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://i.pinimg.com/736x/2a/hol/KhJR.jpg') center/cover;
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .team-grid {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .team-member {
+            background: linear-gradient(135deg, 
+                rgba(167, 139, 250, 0.25), 
+                rgba(96, 165, 250, 0.25));
+            padding: 25px;
+            border-radius: 20px;
+            min-width: 200px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .team-member::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.1), 
+                transparent);
+            transition: left 0.6s;
+        }
+
+        .team-member:hover::before {
+            left: 100%;
+        }
+
+        .team-member:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 15px 35px rgba(167, 139, 250, 0.4);
+        }
+
+        .team-member .role {
+            font-size: 0.9em;
+            opacity: 0.8;
+            margin-bottom: 8px;
+            color: #c7d2fe;
+        }
+
+        .team-member .name {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 5px;
+        }
+
+        .team-member .desc {
+            font-size: 0.85em;
+            opacity: 0.9;
+            color: #e0e7ff;
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin-bottom: 35px;
+        }
+
+        .tool-card {
+            background: rgba(30, 27, 75, 0.6);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tool-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(167, 139, 250, 0.1), 
+                transparent);
+            transition: left 0.5s;
+        }
+
+        .tool-card:hover::before {
+            left: 100%;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(167, 139, 250, 0.3);
+            border-color: rgba(167, 139, 250, 0.6);
+        }
+
+        .tool-card h3 {
+            color: #c7d2fe;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .tool-icon {
+            font-size: 1.8em;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, 
+                var(--hoshino-purple), 
+                var(--hoshino-pink),
+                var(--hoshino-blue));
+            color: white;
+            padding: 16px 28px;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 8px 6px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(167, 139, 250, 0.4);
+            min-width: 190px;
+            position: relative;
+            overflow: hidden;
+            background-size: 200% 200%;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+            transition: left 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 12px 25px rgba(167, 139, 250, 0.6);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #4f46e5, #7c3aed);
+        }
+
+        .btn-success {
+            background: linear-gradient(45deg, #10b981, #059669);
+        }
+
+        .url-input {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.95);
+            color: #1e1b4b;
+            font-size: 16px;
+            margin: 18px 0;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-weight: 500;
+        }
+
+        .url-input:focus {
+            outline: none;
+            border-color: var(--hoshino-purple);
+            box-shadow: 0 8px 25px rgba(167, 139, 250, 0.3);
+            transform: scale(1.02);
+        }
+
+        .url-input::placeholder {
+            color: #6b7280;
+        }
+
+        .website-frame {
+            width: 100%;
+            height: 650px;
+            border: none;
+            border-radius: 20px;
+            margin-top: 25px;
+            background: white;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+            border: 3px solid var(--hoshino-purple);
+        }
+
+        .feature-list {
+            text-align: left;
+            margin: 25px 0;
+        }
+
+        .feature-list li {
+            margin: 12px 0;
+            padding-left: 35px;
+            position: relative;
+            font-size: 1.1em;
+            color: #e0e7ff;
+        }
+
+        .feature-list li::before {
+            content: '💤';
+            position: absolute;
+            left: 0;
+            font-size: 1.2em;
+        }
+
+        .download-section {
+            background: linear-gradient(135deg, 
+                rgba(167, 139, 250, 0.15), 
+                rgba(96, 165, 250, 0.15));
+            padding: 35px;
+            border-radius: 25px;
+            margin-top: 35px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(167, 139, 250, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://i.pinimg.com/736x/2a/hol/KhJR.jpg') center/cover;
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .footer {
+            margin-top: 50px;
+            padding: 25px;
+            background: linear-gradient(135deg, 
+                var(--hoshino-purple), 
+                var(--hoshino-blue));
+            border-radius: 20px;
+            backdrop-filter: blur(15px);
+            box-shadow: 0 10px 30px rgba(167, 139, 250, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://i.pinimg.com/736x/2a/hol/KhJR.jpg') center/cover;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        .footer-credit {
+            font-size: 1.3em;
+            margin-bottom: 12px;
+            font-weight: bold;
+            color: white;
+        }
+
+        .collab-tag {
+            font-size: 1em;
+            opacity: 0.95;
+            color: #e0e7ff;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Hoshino Character Floating */
+        .hoshino-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 120px;
+            height: 120px;
+            background: url('https://i.pinimg.com/736x/2a/hol/KhJR.jpg') center/cover;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 0 30px var(--hoshino-purple),
+                        0 0 60px var(--hoshino-pink);
+            animation: hoshinoFloat 4s ease-in-out infinite;
+            z-index: 100;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .hoshino-float:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 40px var(--hoshino-purple),
+                        0 0 80px var(--hoshino-pink),
+                        0 0 120px var(--hoshino-blue);
+        }
+
+        @keyframes hoshinoFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(5deg); }
+            50% { transform: translateY(-30px) rotate(0deg); }
+            75% { transform: translateY(-20px) rotate(-5deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .btn {
+                min-width: 160px;
+                padding: 14px 22px;
+            }
+            
+            .team-grid {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+            
+            .dev-credit, .partner-badge {
+                position: static;
+                margin-bottom: 15px;
+                display: inline-block;
+            }
+            
+            .logo-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hoshino-avatar {
+                width: 120px;
+                height: 120px;
+            }
+            
+            .title-section h1 {
+                font-size: 2.4em;
+            }
+            
+            .hoshino-float {
+                width: 80px;
+                height: 80px;
+                bottom: 10px;
+                right: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation" id="bgAnimation"></div>
+
+    <!-- Hoshino Floating Character -->
+    <div class="hoshino-float" onclick="playHoshinoSound()" title="Takanashi Hoshino 💤"></div>
+
+    <div class="container">
+        <!-- Header dengan Avatar Hoshino Blue Archive -->
+        <div class="header">
+            <div class="partner-badge">
+                💤 Partner: <strong>Hoshino</strong>
+            </div>
+            <div class="dev-credit">
+                👨‍💻 Dev: <strong>YAMA</strong>
+            </div>
+            
+            <div class="logo-section">
+                <div class="hoshino-avatar"></div>
+                <div class="title-section">
+                    <h1>Hoshino Web App</h1>
+                    <p class="subtitle">Ara~ ara~ Website to App Converter 🌙</p>
+                    <p class="hoshino-quote">"Mendukungmu dengan teknologi terbaik, sensei~"</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collaboration Section -->
+        <div class="collab-section">
+            <h3 style="font-size: 1.8em; margin-bottom: 10px; color: #c7d2fe;">🌟 Tim Pengembang</h3>
+            <p style="opacity: 0.9; margin-bottom: 15px; color: #e0e7ff;">Kolaborasi antara Sensei dan Hoshino</p>
+            <div class="team-grid">
+                <div class="team-member">
+                    <div class="role">Lead Developer</div>
+                    <div class="name">YAMA</div>
+                    <div class="desc">Full Stack Sensei</div>
+                </div>
+                <div class="team-member">
+                    <div class="role">Creative Partner</div>
+                    <div class="name">Hoshino</div>
+                    <div class="desc">Sleepy Support 💤</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Access Buttons -->
+        <div class="tool-card">
+            <h3><span class="tool-icon">🚀</span> Website Cepat</h3>
+            <div>
+                <button class="btn" onclick="bukaWebsite('https://vercel.com')">
+                    🌐 Vercel
+                </button>
+                <button class="btn" onclick="bukaWebsite('https://github.com')">
+                    💻 GitHub
+                </button>
+                <button class="btn" onclick="bukaWebsite('https://google.com')">
+                    🔍 Google
+                </button>
+                <button class="btn" onclick="bukaWebsite('https://youtube.com')">
+                    📺 YouTube
+                </button>
+            </div>
+        </div>
+
+        <!-- Custom URL Input -->
+        <div class="tool-card">
+            <h3><span class="tool-icon">🔗</span> Website Kustom</h3>
+            <input type="text" id="customUrl" class="url-input" 
+                   placeholder="https://example.com" 
+                   onkeypress="if(event.key=='Enter') bukaCustomWebsite()">
+            <button class="btn btn-success" onclick="bukaCustomWebsite()">
+                💫 Buka Website
+            </button>
+        </div>
+
+        <!-- Website Frame -->
+        <div id="websiteFrame" class="hidden">
+            <button class="btn btn-secondary" onclick="tutupWebsite()">
+                🌙 Tutup Website
+            </button>
+            <iframe class="website-frame" id="frame" src=""></iframe>
+        </div>
+
+        <!-- Download Section -->
+        <div class="download-section">
+            <h3 style="font-size: 1.8em; margin-bottom: 15px; color: #c7d2fe;">📥 Download Aplikasi</h3>
+            <p style="font-size: 1.1em; margin-bottom: 20px; color: #e0e7ff;">Install aplikasi ini untuk pengalaman terbaik, sensei! 🎯</p>
+            
+            <div class="feature-list">
+                <li>Buka seperti aplikasi native</li>
+                <li>Akses cepat dari home screen</li>
+                <li>Tampilan fullscreen immersive</li>
+                <li>Design eksklusif theme Hoshino</li>
+                <li>Dengan blessing dari Hoshino 💤</li>
+            </div>
+
+            <button class="btn btn-success" onclick="installApp()">
+                ⬇️ Install Aplikasi
+            </button>
+            
+            <div id="installMessage" style="margin-top: 20px; font-style: italic; font-size: 1.1em; color: #c7d2fe;"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <div class="footer-credit">
+                🎨 <strong>Hoshino Web App</strong> - Blue Archive Edition
+            </div>
+            <div class="collab-tag">
+                👨‍💻 Developed by <strong>YAMA</strong> | 💤 Partner <strong>Takanashi Hoshino</strong> | 🌙 Sleepy Power
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Background Animation
+        function createParticles() {
+            const bgAnimation = document.getElementById('bgAnimation');
+            const colors = ['#a78bfa', '#f472b6', '#60a5fa', '#c7d2fe'];
+            
+            for (let i = 0; i < 20; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'bg-particle';
+                particle.style.width = Math.random() * 80 + 40 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.opacity = Math.random() * 0.2 + 0.1;
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 12 + 8) + 's';
+                bgAnimation.appendChild(particle);
+            }
+        }
+
+        // Hoshino Sound Effect
+        function playHoshinoSound() {
+            // Bisa ditambahkan sound effect Hoshino nanti
+            console.log('Hoshino daisuki! 💤');
+            alert('Ara~ ara~ Sensei! 💤');
+        }
+
+        let deferredPrompt;
+        const frame = document.getElementById('frame');
+        const websiteFrame = document.getElementById('websiteFrame');
+        const installMessage = document.getElementById('installMessage');
+
+        // Fungsi buka website
+        function bukaWebsite(url) {
+            frame.src = url;
+            websiteFrame.classList.remove('hidden');
+            window.scrollTo({ top: websiteFrame.offsetTop - 20, behavior: 'smooth' });
+        }
+
+        // Fungsi buka website kustom
+        function bukaCustomWebsite() {
+            const urlInput = document.getElementById('customUrl');
+            let url = urlInput.value.trim();
+            
+            if (!url) {
+                alert('💤 Ara~ sensei, silakan masukkan URL website terlebih dahulu!');
+                return;
+            }
+
+            // Tambahkan https:// jika tidak ada
+            if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                url = 'https://' + url;
+            }
+
+            bukaWebsite(url);
+        }
+
+        // Fungsi tutup website
+        function tutupWebsite() {
+            frame.src = '';
+            websiteFrame.classList.add('hidden');
+        }
+
+        // PWA Installation
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installMessage.innerHTML = '✅ Aplikasi siap diinstall, sensei! Klik tombol di atas.';
+        });
+
+        function installApp() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        installMessage.innerHTML = '🎉 Aplikasi berhasil diinstall! Terima kasih sensei! 💤';
+                    } else {
+                        installMessage.innerHTML = '😔 Installasi dibatalkan.';
+                    }
+                    deferredPrompt = null;
+                });
+            } else {
+                installMessage.innerHTML = 'ℹ️ Untuk install: Browser menu → "Add to Home Screen"';
+            }
+        }
+
+        // Deteksi jika sudah diinstall sebagai PWA
+        window.addEventListener('appinstalled', () => {
+            installMessage.innerHTML = '🎉 Terima kasih telah menginstall aplikasi, sensei! Hoshino akan mendukungmu! 💤';
+        });
+
+        // Enter key support untuk input
+        document.getElementById('customUrl').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                bukaCustomWebsite();
+            }
+        });
+
+        // Initialize
+        createParticles();
+
+        // Hoshino random quotes
+        const hoshinoQuotes = [
+            "Ara~ ara~ sensei!",
+            "Mau tidur sebentar...",
+            "Sensei, jangan push terlalu keras~",
+            "Hoshino akan mendukungmu!",
+            "Zzz... eh, apa?",
+            "Technology is amazing, sensei!"
+        ];
+
+        // Random quote setiap 10 detik
+        setInterval(() => {
+            const quoteElement = document.querySelector('.hoshino-quote');
+            const randomQuote = hoshinoQuotes[Math.floor(Math.random() * hoshinoQuotes.length)];
+            quoteElement.style.opacity = '0';
+            setTimeout(() => {
+                quoteElement.textContent = `"${randomQuote}"`;
+                quoteElement.style.opacity = '1';
+            }, 500);
+        }, 10000);
+    </script>
+</body>
+</html>
